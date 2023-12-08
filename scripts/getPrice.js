@@ -34,6 +34,9 @@ new Promise(async (resolve, reject) => {
   if (btc.quote && eth.quote) {
     //    console.log("BTC Data",btc);
     //    console.log("ETH Data",eth);
+    console.log(json.BTC);
+    console.log(json.ETH);
+
     console.log("BTC", btc.quote.USD.price);
     console.log("ETH", eth.quote.USD.price);
     const fBtcPrice = btc.quote.USD.price / eth.quote.USD.price;
