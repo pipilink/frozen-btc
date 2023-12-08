@@ -2,7 +2,7 @@ const hre = require("hardhat");
 const ethers = hre.ethers;
 const FrozenBitcoin = require("../artifacts/contracts/nft-fbtc.sol/FBTCDeposit.json");
 
-let indx = 2232;
+let indx = 1;
 let cind = 0;
 let totalSupply = 0;
 let frozenBitcoinContract;
@@ -70,13 +70,13 @@ async function main() {
   console.log("owner", await frozenBitcoinContract.owner());
   console.log("signer", await frozenBitcoinContract.getSigner());
 
-  //console.log('Signature=',signature)
+  // console.log("Signature=", signature);
 
-  // holder = await frozenBitcoinContract.holders(indx)
-  // console.log('Holder Info:', holder)
-  // frozen = await frozenBitcoinContract.frozens(holder.bithash)
-  // console.log('Frozen Info:', frozen)
-  // console.log('uri:',await frozenBitcoinContract.tokenURI(indx))
+  holder = await frozenBitcoinContract.holders(indx);
+  console.log("Holder Info:", indx, holder);
+  frozen = await frozenBitcoinContract.frozens(holder.bithash);
+  console.log("Frozen Info:", frozen);
+  console.log("uri:", await frozenBitcoinContract.tokenURI(indx));
 }
 
 main()

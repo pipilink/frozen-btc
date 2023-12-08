@@ -290,7 +290,7 @@ contract FBTCDeposit is ERC721, ERC721Burnable {
         holder.assets = 0;
         holders[tokenId] = holder;
 
-        if (amount >= 200000000000000000 && prizeFund > 0 && prizeTokens > 0) { // if amount >= 0.1 ETH...
+        if (amount >= 200000000000000000 && prizeFund > 0 && prizeTokens > 0) { // if amount >= 0.2 ETH...
             prize = prizeFund/prizeTokens;  // corrent profit by NFT token of incentive fund
             prizeFund -= prize;             // decrease incentive fund
             amount += prize;                // increase the payout by the amount of the incentive amount
