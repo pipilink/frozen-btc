@@ -1,122 +1,135 @@
-const hre = require("hardhat")
-const ethers = hre.ethers
-const FrozenBitcoin = require('../artifacts/contracts/nft-fbtc.sol/FBTCDeposit.json')
+const hre = require("hardhat");
+const ethers = hre.ethers;
+const FrozenBitcoin = require("../artifacts/contracts/nft-fbtc.sol/FBTCDeposit.json");
 
-let indx = 41445
-let cind = 0
-let totalSupply = 0
-let frozenBitcoinContract
-let rate = 0
-let holder
-let frozen
-let PrizeFund
-let PrizeTokens
+let indx = 0;
+let cind = 0;
+let totalSupply = 0;
+let frozenBitcoinContract;
+let rate = 0;
+let holder;
+let frozen;
+let PrizeFund;
+let PrizeTokens;
 
 async function main() {
-  const [signer,...caller] = await ethers.getSigners()
-  const frozenBitcoinAddr = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
-
-  while ( rate < 100) {
-
-    if (cind > 18)
-      cind = 0
+  const [signer, ...caller] = await ethers.getSigners();
+  const frozenBitcoinAddr = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+  // FBTC  0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+  while (rate < 100) {
+    if (cind > 18) cind = 0;
 
     frozenBitcoinContract = new ethers.Contract(
       frozenBitcoinAddr,
       FrozenBitcoin.abi,
       caller[cind]
-    )
-  
+    );
 
-    indx++
-//    totalSupply = await frozenBitcoinContract.totalSupply()/10**8
-//    console.log('totalSupply',await frozenBitcoinContract.totalSupply()/10**8, 'FBTC')
-    console.log('total NFT', indx)
-    
+    indx++;
+    //    totalSupply = await frozenBitcoinContract.totalSupply()/10**8
+    //    console.log('totalSupply',await frozenBitcoinContract.totalSupply()/10**8, 'FBTC')
+    console.log("total NFT", indx);
+
     await network.provider.send("hardhat_setBalance", [
       caller[cind].address,
       "0x100000000000000000000",
     ]);
-  
-    rate = await frozenBitcoinContract.rate()/100
-    
-    console.log('rate:',rate,"%")
+
+    rate = (await frozenBitcoinContract.rate()) / 100;
+
+    console.log("rate:", rate, "%");
 
     // price = await frozenBitcoinContract.coinPrice('14684902682798530000')
-    price = await frozenBitcoinContract.coinPrice('15000000000000000000')
-    console.log('fee:',price.fee/10**18,"ETH / 1FBTC")
-    console.log('depo:',price.depo/10**18,"ETH / 1FBTC")
-    console.log('price:',price.price/10**18,"ETH / 1FBTC")
-    console.log('CALLER   BALANCE:',await ethers.provider.getBalance(caller[cind].address)/10**18)
-    console.log('OWNER    BALANCE:',await ethers.provider.getBalance("0xf93Cda5C985933EA3Edb40ddefE3169d3Cb28cBF")/10**18)
-    console.log('CONTRACT BALANCE:',await ethers.provider.getBalance(frozenBitcoinAddr)/10**18)
-    PrizeFund = await frozenBitcoinContract.prizeFund()
-    console.log('PrizeFund:',PrizeFund/10**18,'ETH')
-    
-    PrizeTokens = await frozenBitcoinContract.prizeTokens()
+    price = await frozenBitcoinContract.coinPrice("15000000000000000000");
+    console.log("fee:", price.fee / 10 ** 18, "ETH / 1FBTC");
+    console.log("depo:", price.depo / 10 ** 18, "ETH / 1FBTC");
+    console.log("price:", price.price / 10 ** 18, "ETH / 1FBTC");
+    console.log("CALLER   Address:", caller[cind].address);
+    console.log(
+      "CALLER   BALANCE:",
+      (await ethers.provider.getBalance(caller[cind].address)) / 10 ** 18
+    );
+    console.log(
+      "OWNER    BALANCE:",
+      (await ethers.provider.getBalance(
+        "0xf93Cda5C985933EA3Edb40ddefE3169d3Cb28cBF"
+      )) /
+        10 ** 18
+    );
+    console.log(
+      "CONTRACT BALANCE:",
+      (await ethers.provider.getBalance(frozenBitcoinAddr)) / 10 ** 18
+    );
+    PrizeFund = await frozenBitcoinContract.prizeFund();
+    console.log("PrizeFund:", PrizeFund / 10 ** 18, "ETH");
+
+    PrizeTokens = await frozenBitcoinContract.prizeTokens();
     if (PrizeTokens > 0)
-      console.log('Prize by NFT:',(PrizeFund/PrizeTokens)/10**18,'ETH')
+      console.log("Prize by NFT:", PrizeFund / PrizeTokens / 10 ** 18, "ETH");
 
-    console.log('Holder NFT balance',await frozenBitcoinContract.balanceOf(caller[cind].address),'DEPO')
+    console.log(
+      "Holder NFT balance",
+      await frozenBitcoinContract.balanceOf(caller[cind].address),
+      "DEPO"
+    );
 
-  
-    const params = [     
-        ['15000000000000000000'],
-        ['1KNm4K8GUK8sMoxc2Z3zU8Uv5ABC' + indx],
-        ['1000000000000000'],
-        ['0'],
-        ['50000000000'],
-//        ['10000000'],
-        [indx]
-    ]  
+    const params = [
+      ["15000000000000000000"],
+      ["1KNm4K8GUK8sMoxc2Z3zU8Uv5ABC" + indx],
+      ["1000000000000000"],
+      ["0"],
+      ["50000000000"],
+      //        ['10000000'],
+      [indx],
+    ];
 
-    const signature = await getSignature(...params, signer)
+    const signature = await getSignature(...params, signer);
 
     //console.log('Signature=',signature)
 
-    const result = await frozenBitcoinContract.unfrozen(
-      ...params, signature,
-      {value: ethers.utils.parseUnits("999990", "ether")}
-    )
-    
-    
-   // holder = await frozenBitcoinContract.holders(indx)
-   // console.log('Holder Info:', holder)
-   // frozen = await frozenBitcoinContract.frozens(holder.bithash)
-   // console.log('Frozen Info:', frozen)
-   // console.log('uri:',await frozenBitcoinContract.tokenURI(indx))
-    cind++
-  }
+    const result = await frozenBitcoinContract.unfrozen(...params, signature, {
+      value: ethers.utils.parseUnits("999990", "ether"),
+    });
 
+    // holder = await frozenBitcoinContract.holders(indx)
+    // console.log('Holder Info:', holder)
+    // frozen = await frozenBitcoinContract.frozens(holder.bithash)
+    // console.log('Frozen Info:', frozen)
+    // console.log('uri:',await frozenBitcoinContract.tokenURI(indx))
+    cind++;
+  }
 }
 
-async function getSignature(v1,v2,v3,v4,v5,v6, signer) {
-    let _hash = 0 
-    for (let i = 0; i < v2.length; i++) {
-        if (i == 0) 
-            _hash = ethers.utils.solidityKeccak256(
-            ["string", "uint256", "uint256", "uint256","uint256"],
-            [ v2[i], v3[i], v4[i], v5[i], v6[i]])
-        else 
-          _hash = ethers.utils.solidityKeccak256(
-            ["string", "uint256", "uint256", "uint256", "uint256", "bytes32"],
-            [ v2[i], v3[i], v4[i], v5[i], v6[i], _hash ])         
-    }  
-        
-    const hash = ethers.utils.solidityKeccak256( ["uint256","bytes32","address"],[ v1[0], _hash, signer.address]);
-    const messageHashBin = ethers.utils.arrayify(hash);
-    const signature = await signer.signMessage(messageHashBin);
-    return(signature)
+async function getSignature(v1, v2, v3, v4, v5, v6, signer) {
+  let _hash = 0;
+  for (let i = 0; i < v2.length; i++) {
+    if (i == 0)
+      _hash = ethers.utils.solidityKeccak256(
+        ["string", "uint256", "uint256", "uint256", "uint256"],
+        [v2[i], v3[i], v4[i], v5[i], v6[i]]
+      );
+    else
+      _hash = ethers.utils.solidityKeccak256(
+        ["string", "uint256", "uint256", "uint256", "uint256", "bytes32"],
+        [v2[i], v3[i], v4[i], v5[i], v6[i], _hash]
+      );
+  }
 
-}    
+  const hash = ethers.utils.solidityKeccak256(
+    ["uint256", "bytes32", "address"],
+    [v1[0], _hash, signer.address]
+  );
+  const messageHashBin = ethers.utils.arrayify(hash);
+  const signature = await signer.signMessage(messageHashBin);
+  return signature;
+}
 
 main()
-    .then(()=> process.exit(0))
-    .catch((error) => {
-        console.error(error)
-        process.exit(1)
-})
-
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
 
 /*
 npx hardhat node

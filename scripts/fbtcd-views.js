@@ -1,66 +1,90 @@
-const hre = require("hardhat")
-const ethers = hre.ethers
-const FrozenBitcoin = require('../artifacts/contracts/nft-fbtc.sol/FBTCDeposit.json')
+const hre = require("hardhat");
+const ethers = hre.ethers;
+const FrozenBitcoin = require("../artifacts/contracts/nft-fbtc.sol/FBTCDeposit.json");
 
-let indx = 2232
-let cind = 0
-let totalSupply = 0
-let frozenBitcoinContract
-let rate = 0
-let holder
-let frozen
-let PrizeFund
-let PrizeTokens
+let indx = 2232;
+let cind = 0;
+let totalSupply = 0;
+let frozenBitcoinContract;
+let rate = 0;
+let holder;
+let frozen;
+let PrizeFund;
+let PrizeTokens;
 
 async function main() {
-  const [signer,...caller] = await ethers.getSigners()
-  const frozenBitcoinAddr = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+  const [signer, ...caller] = await ethers.getSigners();
+  const frozenBitcoinAddr = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
   frozenBitcoinContract = new ethers.Contract(
     frozenBitcoinAddr,
     FrozenBitcoin.abi,
     signer
-  )
- 
-  rate = await frozenBitcoinContract.rate()/100
-    
-  console.log('rate:',rate,"%")
+  );
 
-    price = await frozenBitcoinContract.coinPrice('15000000000000000000')
-    console.log('fee:',price.fee/10**18,"ETH / 1FBTC")
-    console.log('depo:',price.depo/10**18,"ETH / 1FBTC")
-    console.log('price:',price.price/10**18,"ETH / 1FBTC")
-    console.log('CALLER   BALANCE:',await ethers.provider.getBalance(caller[cind].address)/10**18)
-    console.log('OWNER    BALANCE:',await ethers.provider.getBalance("0xf93Cda5C985933EA3Edb40ddefE3169d3Cb28cBF")/10**18)
-    console.log('CONTRACT BALANCE:',await ethers.provider.getBalance(frozenBitcoinAddr)/10**18)
-    PrizeFund = await frozenBitcoinContract.prizeFund()
-    console.log('PrizeFund:',PrizeFund/10**18,'ETH')
-    
-    PrizeTokens = await frozenBitcoinContract.prizeTokens()
-    if (PrizeTokens > 0)
-      console.log('Prize by NFT:',(PrizeFund/PrizeTokens)/10**18,'ETH')
+  rate = (await frozenBitcoinContract.rate()) / 100;
 
-    console.log('Holder NFT balance',await frozenBitcoinContract.balanceOf(caller[cind].address),'DEPO')
-    console.log('owner',await frozenBitcoinContract.owner())
-    console.log('signer',await frozenBitcoinContract.getSigner())
+  console.log("rate:", rate, "%");
 
-    //console.log('Signature=',signature)
+  price = await frozenBitcoinContract.coinPrice("15000000000000000000");
+  console.log("fee:", price.fee / 10 ** 18, "ETH / 1FBTC");
+  console.log("depo:", price.depo / 10 ** 18, "ETH / 1FBTC");
+  console.log("price:", price.price / 10 ** 18, "ETH / 1FBTC");
+  console.log(
+    "CALLER   BALANCE:",
+    (await ethers.provider.getBalance(caller[cind].address)) / 10 ** 18
+  );
+  console.log(
+    "OWNER    BALANCE:",
+    (await ethers.provider.getBalance(
+      "0xf93Cda5C985933EA3Edb40ddefE3169d3Cb28cBF"
+    )) /
+      10 ** 18
+  );
+  console.log(
+    "CONTRACT BALANCE:",
+    (await ethers.provider.getBalance(frozenBitcoinAddr)) / 10 ** 18
+  );
+  PrizeFund = await frozenBitcoinContract.prizeFund();
+  console.log("PrizeFund:", PrizeFund / 10 ** 18, "ETH");
 
-   // holder = await frozenBitcoinContract.holders(indx)
-   // console.log('Holder Info:', holder)
-   // frozen = await frozenBitcoinContract.frozens(holder.bithash)
-   // console.log('Frozen Info:', frozen)
-   // console.log('uri:',await frozenBitcoinContract.tokenURI(indx))
+  PrizeTokens = await frozenBitcoinContract.prizeTokens();
+  if (PrizeTokens > 0) {
+    console.log("Prize Tokens:", PrizeTokens);
+    console.log("Prize by NFT:", PrizeFund / PrizeTokens / 10 ** 18, "ETH");
+  }
 
+  console.log(
+    "Holder NFT balance",
+    await frozenBitcoinContract.balanceOf(caller[cind].address),
+    "DEPO"
+  );
+
+  // totalSupply = (await frozenBitcoinContract.totalSupply()) / 10 ** 8;
+  console.log(
+    "totalMints",
+    (await frozenBitcoinContract.totalMints()) / 10 ** 8,
+    "FBTC"
+  );
+
+  console.log("owner", await frozenBitcoinContract.owner());
+  console.log("signer", await frozenBitcoinContract.getSigner());
+
+  //console.log('Signature=',signature)
+
+  // holder = await frozenBitcoinContract.holders(indx)
+  // console.log('Holder Info:', holder)
+  // frozen = await frozenBitcoinContract.frozens(holder.bithash)
+  // console.log('Frozen Info:', frozen)
+  // console.log('uri:',await frozenBitcoinContract.tokenURI(indx))
 }
 
 main()
-    .then(()=> process.exit(0))
-    .catch((error) => {
-        console.error(error)
-        process.exit(1)
-})
-
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
 
 /*
 npx hardhat node
@@ -143,7 +167,7 @@ Private Key: 0xde9be858da4a475276426320d5e9262ecfc3ba460bfac56360bfa6c4c28b4ee0
 Account #19: 0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199 (10000 ETH)
 Private Key: 0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e
 */
-  /*
+/*
   console.log('Holder balance',await fbtcDepositContract.balanceOf("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")/10**8,'FBTC')
   console.log('Holder Fine',await frozenBitcoinContract.fineInfo("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")/10**8,'ETH')
   const holder = await frozenBitcoinContract.holderInfo("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
@@ -162,11 +186,9 @@ Private Key: 0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e
   console.log('totalSupply',await frozenBitcoinContract.totalSupply()/10**8)
   console.log('\n')
  */
-  
+
 //console.log(await frozenBitcoinContract.transferFeeOwnership("0xf93Cda5C985933EA3Edb40ddefE3169d3Cb28cBF"))
 // random address
-// address raddress = address(uint160(uint(keccak256(abi.encodePacked(blockhash(block.timestamp))))));      
-
-
+// address raddress = address(uint160(uint(keccak256(abi.encodePacked(blockhash(block.timestamp))))));
 
 // npx hardhat run .\scripts\fbtcd-views.js --network localhost
