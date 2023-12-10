@@ -16,6 +16,10 @@ async function main() {
   const [signer, ...caller] = await ethers.getSigners();
   const frozenBitcoinAddr = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   // FBTC  0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+
+  if (indx == 0) 
+    await network.provider.send("hardhat_setBalance", [signer.address,"0x0",]);
+
   while (rate < 100) {
     if (cind > 18) cind = 0;
 
@@ -39,23 +43,19 @@ async function main() {
 
     console.log("rate:", rate, "%");
 
-    // price = await frozenBitcoinContract.coinPrice('14684902682798530000')
-    price = await frozenBitcoinContract.coinPrice("15000000000000000000");
+    price = await frozenBitcoinContract.coinPrice('18666095676898124000')
+    // price = await frozenBitcoinContract.coinPrice("15000000000000000000");
     console.log("fee:", price.fee / 10 ** 18, "ETH / 1FBTC");
     console.log("depo:", price.depo / 10 ** 18, "ETH / 1FBTC");
     console.log("price:", price.price / 10 ** 18, "ETH / 1FBTC");
     console.log("CALLER   Address:", caller[cind].address);
     console.log(
       "CALLER   BALANCE:",
-      (await ethers.provider.getBalance(caller[cind].address)) / 10 ** 18
-    );
+      (await ethers.provider.getBalance(caller[cind].address)) / 10 ** 18);
+    
     console.log(
       "OWNER    BALANCE:",
-      (await ethers.provider.getBalance(
-        "0xf93Cda5C985933EA3Edb40ddefE3169d3Cb28cBF"
-      )) /
-        10 ** 18
-    );
+      (await ethers.provider.getBalance(signer.address)) / 10 ** 18);
     console.log(
       "CONTRACT BALANCE:",
       (await ethers.provider.getBalance(frozenBitcoinAddr)) / 10 ** 18
@@ -78,8 +78,9 @@ async function main() {
       ["1KNm4K8GUK8sMoxc2Z3zU8Uv5ABC" + indx],
       ["1000000000000000"],
       ["0"],
-      ["50000000000"],
-      //        ['10000000'],
+      //["10000000000000"],
+      ["500000000000"],
+      //["10000000"],
       [indx],
     ];
 

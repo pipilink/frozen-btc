@@ -19,9 +19,7 @@ const run = () => {
       .query("select max(block_index) last_id from  public.fbtc_candidates")
       .then((res) => {
         client.release();
-        //      pool.end;
         block_hight = res.rows[0].last_id + 1;
-        //      console.log(block_hight);
         getNextBlock(block_hight);
       })
       .catch((e) => {
@@ -47,9 +45,6 @@ function getNextBlock(block_hight) {
       reject(ex);
     }
     if (response) {
-      // success
-      // Uncomment this when you had banned
-      //      console.log(response);
       if (response.data.blocks.length && response.data.blocks[0].n_tx == 1) {
         const block_index = response.data.blocks[0].block_index;
         const btc = response.data.blocks[0].tx[0].out[0].addr;

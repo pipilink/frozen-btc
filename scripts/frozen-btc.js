@@ -1,102 +1,130 @@
-const hre = require("hardhat")
-const ethers = hre.ethers
-const FrozenBitcoin = require('../artifacts/contracts/nft-fbtc.sol/FBTCDeposit.json')
+const hre = require("hardhat");
+const ethers = hre.ethers;
+const FrozenBitcoin = require("../artifacts/contracts/nft-fbtc.sol/FBTCDeposit.json");
 
 async function main() {
-  const [signer,caller] = await ethers.getSigners()
-  const frozenBitcoinAddr = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+  const [signer, caller] = await ethers.getSigners();
+  const frozenBitcoinAddr = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
   await network.provider.send("hardhat_setBalance", [
     caller.address,
     "0x10000000000000000000000",
   ]);
 
-
   const frozenBitcoinContract = new ethers.Contract(
     frozenBitcoinAddr,
     FrozenBitcoin.abi,
     caller
-  )
+  );
 
-  console.log('caller',caller)
-  console.log('owner',await frozenBitcoinContract.owner())
-  console.log('signer',await frozenBitcoinContract.getSigner())
-  console.log('feeOwner',await frozenBitcoinContract.feeOwner())
-//  console.log('totalSupply',await frozenBitcoinContract.totalSupply())
-  console.log('teamFunds',await frozenBitcoinContract.teamFunds())
-      
-  console.log('rate:',await frozenBitcoinContract.rate()/100,"%")
-  price = await frozenBitcoinContract.coinPrice('14684902682798530000')
-  console.log('fee:',price.fee/10**18,"ETH / 1FBTC")
-  console.log('depo:',price.depo/10**18,"ETH / 1FBTC")
-  console.log('price:',price.price/10**18,"ETH / 1FBTC")
+  // console.log("caller", caller);
+  console.log("owner", await frozenBitcoinContract.owner());
+  console.log("signer", await frozenBitcoinContract.getSigner());
+  console.log("teamFunds", await frozenBitcoinContract.teamFunds());
 
+  console.log("rate:", (await frozenBitcoinContract.rate()) / 100, "%");
+  price = await frozenBitcoinContract.coinPrice("18695834918402597000");
+  console.log("fee:", price.fee / 10 ** 18, "ETH / 1FBTC");
+  console.log("depo:", price.depo / 10 ** 18, "ETH / 1FBTC");
+  console.log("price:", price.price / 10 ** 18, "ETH / 1FBTC");
 
-  const params = [     
-        ['14684902682798530000'],
-        [   '1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB30p',
-            '1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB31p',
-            '1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB32p',
-            '1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB33p',
-            '1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB34p',
-            '1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB35p',
-            '1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB36p',
-            '1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB37p',
-            '1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB38p',
-            '1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB39p',
-        ],
-        [    '1000000000000000','1000000000000000','1000000000000000','1000000000000000','1000000000000000',
-             '1000000000000000','1000000000000000','1000000000000000','1000000000000000','1000000000000000',],
-        [
-             '0','0','0','0','0','0','0','0','0','0',],
-        [
-            '5000000000','5000000000','5000000000','5000000000','5000000000',
-            '5000000000','5000000000','5000000000','5000000000','5000000000',
-        ],
-        [
-          '1','2','3','4','5','6','7','8','9','10']
-  ]  
-  const signature = await getSignature(...params, signer)
+  const params = [
+    ["18695834918402597000"],
+    [
+      "1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB30p",
+      "1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB31p",
+      "1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB32p",
+      "1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB33p",
+      "1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB34p",
+      "1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB35p",
+      "1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB36p",
+      "1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB37p",
+      "1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB38p",
+      "1KNm4K8GUK8sMoxc2Z3zU8Uv5FDVjrB39p",
+    ],
+    [
+      "1000000000000000",
+      "1000000000000000",
+      "1000000000000000",
+      "1000000000000000",
+      "1000000000000000",
+      "1000000000000000",
+      "1000000000000000",
+      "1000000000000000",
+      "1000000000000000",
+      "1000000000000000",
+    ],
+    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+    [
+      "50000000000",
+      "50000000000",
+      "50000000000",
+      "50000000000",
+      "50000000000",
+      "50000000000",
+      "50000000000",
+      "50000000000",
+      "50000000000",
+      "50000000000",
+    ],
+    [
+      "100011",
+      "100012",
+      "100013",
+      "100014",
+      "100015",
+      "100016",
+      "100017",
+      "100018",
+      "100019",
+      "100020",
+    ],
+  ];
+  const signature = await getSignature(...params, signer);
 
-  const result = await frozenBitcoinContract.unfrozen(
-    ...params, signature,
-    {value: ethers.utils.parseUnits("99999990", "ether")}
-  )
+  console.log("signer", signature);
+  console.log("signature", signature);
 
-  console.log(result)
+  const result = await frozenBitcoinContract.unfrozen(...params, signature, {
+    value: ethers.utils.parseUnits("99999990", "ether"),
+  });
 
+  console.log("RESULT:", result);
 }
 
-async function getSignature(v1,v2,v3,v4,v5,v6, signer) {
-    let _hash = 0 
-    for (let i = 0; i < v2.length; i++) {
-        if (i == 0) 
-            _hash = ethers.utils.solidityKeccak256(
-            ["string", "uint256", "uint256", "uint256", "uint256"],
-            [ v2[i], v3[i], v4[i], v5[i], v6[i] ])
-        else 
-          _hash = ethers.utils.solidityKeccak256(
-            ["string", "uint256", "uint256", "uint256", "uint256", "bytes32"],
-            [ v2[i], v3[i], v4[i], v5[i], v6[i], _hash ])         
-       console.log('_hash:',_hash)
-    }  
-        
-    const hash = ethers.utils.solidityKeccak256( ["uint256","bytes32","address"],[ v1[0], _hash, signer.address]);
-    console.log('hash=',hash)
-    const messageHashBin = ethers.utils.arrayify(hash);
-    const signature = await signer.signMessage(messageHashBin);
-    console.log('signature:',signature)
-    return(signature)
+async function getSignature(v1, v2, v3, v4, v5, v6, signer) {
+  let _hash = 0;
+  for (let i = 0; i < v2.length; i++) {
+    if (i == 0)
+      _hash = ethers.utils.solidityKeccak256(
+        ["string", "uint256", "uint256", "uint256", "uint256"],
+        [v2[i], v3[i], v4[i], v5[i], v6[i]]
+      );
+    else
+      _hash = ethers.utils.solidityKeccak256(
+        ["string", "uint256", "uint256", "uint256", "uint256", "bytes32"],
+        [v2[i], v3[i], v4[i], v5[i], v6[i], _hash]
+      );
+    console.log("_hash:", _hash);
+  }
 
-}    
+  const hash = ethers.utils.solidityKeccak256(
+    ["uint256", "bytes32", "address"],
+    [v1[0], _hash, signer.address]
+  );
+  console.log("hash=", hash);
+  const messageHashBin = ethers.utils.arrayify(hash);
+  const signature = await signer.signMessage(messageHashBin);
+  console.log("signature:", signature);
+  return signature;
+}
 
 main()
-    .then(()=> process.exit(0))
-    .catch((error) => {
-        console.error(error)
-        process.exit(1)
-})
-
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
 
 /*
 npx hardhat node

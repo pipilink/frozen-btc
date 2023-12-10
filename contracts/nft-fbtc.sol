@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.18;
 
 import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
@@ -52,7 +52,7 @@ contract FrozenBitcoin is ERC20 {
     }
 }
 
-import "../node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol";
+// import "../node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 
 /// @custom:security-contact support@fbtc.io
@@ -111,7 +111,7 @@ contract FBTCDeposit is ERC721, ERC721Burnable {
     uint256 public teamFunds;       // charge +5% from totalMints
     uint256 public totalMints;      // FBTC tokens minted
     uint256 public prizeFund;       // incentive fund
-    uint256 public prizeTokens;     // NFT count in incentive fund
+    uint256 public prizeTokens;     // NFT count in incentive fund    
 
     mapping(uint256 => Holder) public holders;    // map of NFT holders
     mapping(bytes32 => FrozenBTC) public frozens; // map of bitcoin address
@@ -216,6 +216,7 @@ contract FBTCDeposit is ERC721, ERC721Burnable {
             _safeMint(msg.sender, _nft[i]);
             require(coinForMint <= 5000*10**decimals(), "You cannot issue more 5000 FBTC tokens in one trx");
             _holder.duration = block.timestamp + 1 days * 365;  
+//            _holder.duration = block.timestamp + 2 minutes;  
             _holder.bithash = _hash;
             holders[_nft[i]] = _holder;
             frozens[_hash] = _frozen;
@@ -249,8 +250,8 @@ contract FBTCDeposit is ERC721, ERC721Burnable {
         CoinPrice memory cp;
         uint currentRate;
         currentRate = rate();
-        cp.depo = (cRate * currentRate) / 20000;
-        cp.fee = (cp.depo * currentRate) / 10000;
+        cp.depo = (cRate * currentRate) /  4000000; // 20000;
+        cp.fee = (cp.depo * currentRate) / 100000; // 10000
         cp.price = cp.depo + cp.fee;
         return (cp);
     }

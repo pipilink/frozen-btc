@@ -16,7 +16,10 @@ pool.on("error", (err, client) => {
 
 pool.connect().then((client) => {
   return client
-    .query("SELECT * FROM fbtc_candidates")
+    .query(
+      "SELECT * FROM fbtc_candidates where block_index = " +
+        `${process.argv[2] || "(select max(block_index) from fbtc_candidates)"}`
+    )
     .then((res) => {
       client.release();
       console.log(res.rows); // your callback here
