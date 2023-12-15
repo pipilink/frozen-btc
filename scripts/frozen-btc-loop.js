@@ -45,9 +45,9 @@ async function main() {
 
     price = await frozenBitcoinContract.coinPrice('18666095676898124000')
     // price = await frozenBitcoinContract.coinPrice("15000000000000000000");
-    console.log("fee:", price.fee / 10 ** 18, "ETH / 1FBTC");
-    console.log("depo:", price.depo / 10 ** 18, "ETH / 1FBTC");
-    console.log("price:", price.price / 10 ** 18, "ETH / 1FBTC");
+    console.log("fee:", price.fee / 10 ** 18, "ETH / FRBTC");
+    console.log("depo:", price.depo / 10 ** 18, "ETH / FRBTC");
+    console.log("price:", price.price / 10 ** 18, "ETH / FRBTC");
     console.log("CALLER   Address:", caller[cind].address);
     console.log(
       "CALLER   BALANCE:",
@@ -74,12 +74,13 @@ async function main() {
     );
 
     const params = [
-      ["15000000000000000000"],
+//      ["15000000000000000000"],
+      ["18983972461657720000"],
       ["1KNm4K8GUK8sMoxc2Z3zU8Uv5ABC" + indx],
       ["1000000000000000"],
       ["0"],
       //["10000000000000"],
-      ["500000000000"],
+      ["10000000000"],
       //["10000000"],
       [indx],
     ];

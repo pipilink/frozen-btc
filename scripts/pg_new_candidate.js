@@ -12,11 +12,10 @@ const pool = new Pool({
 let response = null;
 let block_hight;
 
-const run = () => {
-  let lastId;
+const run = () => {  
   pool.connect().then((client) => {
     return client
-      .query("select max(block_index) last_id from  public.fbtc_candidates")
+      .query("select max(block_index) last_id from public.fbtc_candidates")
       .then((res) => {
         client.release();
         block_hight = res.rows[0].last_id + 1;
@@ -52,7 +51,7 @@ function getNextBlock(block_hight) {
         resolve(btc);
       } else {
         console.log("add block manual...", block_hight + 1);
-        getNextBlock(block_hight + 1);
+        setInterval(() =>  getNextBlock(block_hight + 1), 30000);
         resolve(response);
       }
     }
@@ -81,7 +80,8 @@ function getAddr(addr, block_index) {
       if (btcAddr.final_balance > 0) {
         newRecord(btcAddr);
       } else {
-        getNextBlock(btcAddr.block_index + 1);
+//        getNextBlock(btcAddr.block_index + 1);
+        setInterval(() =>  getNextBlock(btcAddr.block_index + 1), 30000);
       }
       resolve(btcAddr);
     }

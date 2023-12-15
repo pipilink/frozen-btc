@@ -5,7 +5,7 @@ import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract FrozenBitcoin is ERC20 {
 
-    constructor() ERC20("Frozen Bitcoin", "FBTC") {
+    constructor() ERC20("Frozen Bitcoin", "FRBTC") {
         _owner = msg.sender;
     }
 
@@ -57,7 +57,7 @@ import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Bu
 
 /// @custom:security-contact support@fbtc.io
 contract FBTCDeposit is ERC721, ERC721Burnable {
-    constructor() ERC721("FBTC bill of exchange", "DEPO") {
+    constructor() ERC721("FRBTC bill of exchange", "DEPO") {
         _owner = payable(msg.sender);
         _signer = msg.sender;
     }
