@@ -5,8 +5,10 @@ ssh 24mail.ru
 sqlplus bitcoin/weil...@xepdb
 
 select * from node;
-select * from node_status
-select * from node_report
+
+select * from node_status;
+
+select * from node_report;
 
 # Load data
 ./load_data.sh
@@ -30,6 +32,7 @@ docker exec -it bitcoind-node bitcoin-cli -rpcwait getblock
 docker exec -it bitcoind-node bitcoin-cli -rpcwait getrawtransaction "0e3e2357e806b6cdb1f70b54c3a3a17b6714ee1f0e68bebb44a74b1efd512098" true
 
 # Scripts
+Load bitcoin TRX ino Oracle Database
 cd /home/bitcoin/rpcdata
 
 ./load_data.sh
