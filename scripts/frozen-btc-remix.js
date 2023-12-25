@@ -29,8 +29,8 @@ async function main() {
   console.log("price:", price.price / 10 ** 18, "ETH / 1FBTC");
 
   const params = [
-["18595772122781557000"],["1F6LxhtjaGkkYseh9WKM5BmSfb9yGBpMb6","1Pe3Na7MZB6hVePDsLKse2bWPuTK2Lamej"],["5000000547","5000003282"],["0","0"],["5000000000","5000000000"],[1,2],
-// ["18595772122781557000"],["1Bu3Ex1GoNHFvaoNRzE2FeehyAVtgT47Wg"],["100000000000000"],["0"],["500000000000"],["7"],
+// ["18595772122781557000"],["1F6LxhtjaGkkYseh9WKM5BmSfb9yGBpMb6","1Pe3Na7MZB6hVePDsLKse2bWPuTK2Lamej"],["5000000547","5000003282"],["0","0"],["5000000000","5000000000"],[1,2],
+["18595772122781557000"],["1Bu3Ex1GoNHFvaoNRzE2FeehyAVtgT47Wg"],["10000000000"],["0"],["5000000000"],["5"],
   ];
   const signature = await getSignature(...params, signer);
   console.log(params);

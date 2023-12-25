@@ -41,7 +41,7 @@ new Promise(async (resolve, reject) => {
     console.log("ETH", eth.quote.USD.price);
     const fBtcPrice = btc.quote.USD.price / eth.quote.USD.price;
     console.log("BTC/ETH Price", fBtcPrice);
-    console.log("Unfrozen projact price", fBtcPrice * 10 ** 18);
+    console.log("Unfrozen project price", fBtcPrice * 10 ** 18);
     console.log("My Ether active", eth.quote.USD.price * 5 * 100, "RUB");
     console.log("Last updated", eth.quote.USD.last_updated);
   }
